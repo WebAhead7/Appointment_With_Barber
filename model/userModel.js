@@ -1,4 +1,4 @@
-const db = require("../database/connection");
+const db = require('../database/connection');
 
 function addUser({ email, phone, firstname, lastname, pass, isBusinessOwner }) {
   return db.query(
@@ -7,4 +7,11 @@ function addUser({ email, phone, firstname, lastname, pass, isBusinessOwner }) {
   );
 }
 
-module.exports = { addUser };
+function getUserByPhone(phone) {
+  return db.query(`SELECT * FROM users WHERE phone=$1`, [phone]).then((res) => {
+    if (!res.rows.length) throw new Error('No user with this phone number');
+    return res.rows[0];
+  });
+}
+
+module.exports = { addUser, getUserByPhone };
