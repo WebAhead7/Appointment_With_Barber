@@ -9,7 +9,9 @@ phone VARCHAR(255) NOT NULL,
 firstname VARCHAR(255) NOT NULL,
 lastname VARCHAR(255) NOT NULL,
 pass VARCHAR(255) NOT NULL,
-isBusinessOwner BOOLEAN NOT NULL 
+isBusinessOwner BOOLEAN NOT NULL,
+myBusinesses TEXT,
+myFavorites TEXT
 );
 
 
@@ -20,6 +22,13 @@ CREATE TABLE business(
     businessAddress VARCHAR(255) NOT NULL,
     geoLocation VARCHAR(255) NOT NULL
 );
+
+
+
+INSERT INTO users (email,phone,firstname,lastname,pass,isBusinessOwner)
+VALUES ('mhmd@gmail.com','5610321053','muhammad','awwad','123321',false),
+('hammode@gmail.com','123456789','hammode','awwad','65156156',true);
+
 
 
 
