@@ -25,12 +25,12 @@ const editBusinessHandler = require("./handlers/editBusiness");
 const newBusinessHandler = require("./handlers/newBusinessHandler");
 const auth = require("./middleware/auth");
 //routes
-/*server.post("/signup", signupHandler);
-server.post("/login", auth, loginHandler);
-server.get("/business/:name", auth, getBusinessHandler);
-server.put("/editbusinsess/:id", auth, editBusinessHandler);
-server.post("/newbusinsess/", auth, newBusinessHandler);
-*/
+server.post("/signup", signupHandler.addUser);
+// server.post("/login", auth, loginHandler);
+// server.get("/business/:name", auth, getBusinessHandler);
+// server.put("/editbusinsess/:id", auth, editBusinessHandler);
+// server.post("/newbusinsess/", auth, newBusinessHandler);
+
 server.use(handleError);
 
 server.listen(port, () =>
