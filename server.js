@@ -33,7 +33,7 @@ server.post("/login", loginHandler.login);
 server.get("/getbusiness/:name", getBusinessHandler);
 server.get("/getbusiness", getBusinessHandler);
 server.post("/newbusiness", verifyUser, newBusinessHandler);
-//server.put("/editbusinsess/:id",verifyUser, editBusinessHandler);
+server.put("/editbusinsess/:id", verifyUser, editBusinessHandler);
 
 server.get("/appointments/:id", loginHandler.getAppointments);
 
