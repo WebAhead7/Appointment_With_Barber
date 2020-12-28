@@ -35,6 +35,7 @@ server.post('/newbusiness', verifyUser, newBusinessHandler);
 server.put('/editbusinsess/:id', verifyUser, editBusinessHandler);
 
 server.get('/appointments/:id', loginHandler.getAppointments);
+// server.post('/appointments/add/:id', loginHandler.updateAppointments);
 
 server.use(handleError);
 

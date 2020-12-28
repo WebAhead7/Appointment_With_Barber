@@ -43,11 +43,17 @@ function getAppointments(client_id) {
       return client.rows[0];
     });
 }
-
+function updateAppointments(appt, client_id) {
+  return db.query(`UPDATE users SET myAppointments=$2 WHERE id=$1`, [
+    client_id,
+    appt,
+  ]);
+}
 module.exports = {
   addUser,
   getUserByPhone,
   getUserByEmail,
   checkValid,
   getAppointments,
+  updateAppointments,
 };

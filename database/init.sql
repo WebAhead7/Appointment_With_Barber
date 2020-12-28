@@ -28,8 +28,8 @@ CREATE TABLE business(
 
 
 INSERT INTO users (email,phone,firstname,lastname,pass,isBusinessOwner,myAppointments)
-VALUES ('mhmd@gmail.com','5610321053','muhammad','awwad','123321',false,'[{06/12/20,18:00,1}]'),
-('hammode@gmail.com','123456789','hammode','awwad','65156156',true,'');
+VALUES ('mhmd@gmail.com','5610321053','muhammad','awwad','123321',false, NULL),
+('hammode@gmail.com','123456789','hammode','awwad','65156156',true, NULL);
 
 
 

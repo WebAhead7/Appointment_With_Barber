@@ -1,4 +1,4 @@
-const businessModel = require("../model/businessModel");
+const businessModel = require('../model/businessModel');
 
 //getBusinessHandler
 const getBusinessHandler = (req, res) => {
