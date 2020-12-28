@@ -20,17 +20,19 @@ server.use(bodyParser.urlencoded({ extended: true }));
 //handlers
 const signupHandler = require("./handlers/signupHandler");
 const loginHandler = require("./handlers/loginHandler");
-const getBusinessHandler = require("./handlers/getBusiness");
-const editBusinessHandler = require("./handlers/editBusiness");
+const getBusinessHandler = require("./handlers/getBusinessHandler");
+const editBusinessHandler = require("./handlers/editBusinessHandler");
 const newBusinessHandler = require("./handlers/newBusinessHandler");
 const auth = require("./middleware/auth");
 //routes
-/*server.post("/signup", signupHandler);
-server.post("/login", auth, loginHandler);
-server.get("/business/:name", auth, getBusinessHandler);
-server.put("/editbusinsess/:id", auth, editBusinessHandler);
-server.post("/newbusinsess/", auth, newBusinessHandler);
-*/
+//server.post("/signup", signupHandler);
+//server.post("/login", auth, loginHandler);
+
+server.get("/getbusiness/:name", getBusinessHandler);
+server.get("/getbusiness", getBusinessHandler);
+server.post("/newbusiness", newBusinessHandler);
+//server.put("/editbusinsess/:id", editBusinessHandler);
+
 server.use(handleError);
 
 server.listen(port, () =>
