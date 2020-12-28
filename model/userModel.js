@@ -1,4 +1,4 @@
-const db = require('../database/connection');
+const db = require("../database/connection");
 
 function addUser({ email, phone, firstname, lastname, pass, isBusinessOwner }) {
   return db.query(
@@ -9,13 +9,13 @@ function addUser({ email, phone, firstname, lastname, pass, isBusinessOwner }) {
 
 function getUserByPhone(phone) {
   return db.query(`SELECT * FROM users WHERE phone=$1`, [phone]).then((res) => {
-    if (!res.rows.length) throw new Error('No user with this phone number');
+    if (!res.rows.length) throw new Error("No user with this phone number");
     return res.rows[0];
   });
 }
 function getUserByEmail(email) {
   return db.query(`SELECT * FROM users WHERE email=$1`, [email]).then((res) => {
-    if (!res.rows.length) throw new Error('No user with this email');
+    if (!res.rows.length) throw new Error("No user with this email");
     return res.rows[0];
   });
 }
@@ -38,16 +38,19 @@ function getAppointments(client_id) {
     .query(`SELECT myAppointments FROM users WHERE id=$1`, [client_id])
     .then((client) => {
       if (!client.rows.length) {
-        throw new Error('User not found');
+        throw new Error("User not found");
       }
+      console.log("clients rooows: ", client.rows);
       return client.rows[0];
     });
 }
 function updateAppointments(appt, client_id) {
-  return db.query(`UPDATE users SET myAppointments=$2 WHERE id=$1`, [
-    client_id,
-    appt,
-  ]);
+  return db
+    .query(
+      `UPDATE users SET myAppointments=$2 WHERE id=$1 RETURNING myappointments`,
+      [client_id, appt]
+    )
+    .then((user) => user.rows[0]);
 }
 module.exports = {
   addUser,

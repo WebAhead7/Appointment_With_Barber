@@ -55,7 +55,7 @@ const createCalendarTable = (calendar, businessId) => {
     console.log("Connected!");
     //Now in the following command we will create the table
     db.query(
-      `CREATE TABLE ${tableName} (id SERIAL PRIMARY KEY,workinghours TEXT, isWorking Boolean, appointments VARCHAR(255), diff INTEGER,daynum INTEGER)`
+      `CREATE TABLE ${tableName} (id SERIAL PRIMARY KEY,workinghours TEXT, isWorking Boolean, appointments TEXT, diff INTEGER,daynum INTEGER)`
     )
       .then(() => {
         console.log("Table Created");

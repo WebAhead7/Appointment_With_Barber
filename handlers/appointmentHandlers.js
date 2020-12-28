@@ -1,4 +1,6 @@
 const businessModel = require("../model/businessModel");
+const loginHandler = require("../handlers/loginHandler");
+const { json } = require("body-parser");
 
 //  we will get this  -> {day: "august/18", hour: "16:30", businessId:5}
 const makeAppointmentHandler = (req, res) => {
@@ -51,6 +53,12 @@ const makeAppointmentHandler = (req, res) => {
             hour: hour,
             userid: userid,
           };
+          const appointmentToSend = {
+            hour: hour,
+            businessId: businessId,
+            userid: userid,
+            date: day,
+          };
           if (!appointments) {
             appointments = [];
           }
@@ -58,9 +66,26 @@ const makeAppointmentHandler = (req, res) => {
           const stringifiedAppointments = JSON.stringify(appointments);
           businessModel
             .insertAppointments(tableName, date, stringifiedAppointments)
-            .then((day) => console.log("day inserted: ", day));
+            .then((day) => {
+              //call hala's and salah's function, send the appointment(appointmentToInsert) as an argument
+              loginHandler.updateAppointments(
+                appointmentToSend,
+                function (user) {
+                  console.log(user);
+                  res.status(201).json(user);
+                  return;
+                }
+              );
+            })
+            .catch((err) => console.log(err));
+        } else {
+          res.status(400).json("not available");
         }
+      } else {
+        res.status(400).json("not available");
       }
+    } else {
+      res.status(400).json("not available");
     }
   });
 };
