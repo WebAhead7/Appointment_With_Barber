@@ -13,5 +13,10 @@ function getUserByPhone(phone) {
     return res.rows[0];
   });
 }
-
-module.exports = { addUser, getUserByPhone };
+function getUserByEmail(email) {
+  return db.query(`SELECT * FROM users WHERE email=$1`, [email]).then((res) => {
+    if (!res.rows.length) throw new Error('No user with this email');
+    return res.rows[0];
+  });
+}
+module.exports = { addUser, getUserByPhone, getUserByEmail };
