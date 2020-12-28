@@ -12,6 +12,7 @@ const getBusinessHandler = require('./handlers/getBusinessHandler');
 const editBusinessHandler = require('./handlers/editBusinessHandler');
 const newBusinessHandler = require('./handlers/newBusinessHandler');
 const verifyUser = require('./middleware/auth');
+const appointmentHandlers = require('./handlers/appointmentHandlers');
 
 dotenv.config();
 const port = 4000 || process.env.PORT;
@@ -33,9 +34,12 @@ server.get('/getbusiness/:name', getBusinessHandler);
 server.get('/getbusiness', getBusinessHandler);
 server.post('/newbusiness', verifyUser, newBusinessHandler);
 server.put('/editbusinsess/:id', verifyUser, editBusinessHandler);
-
+server.post(
+  '/makeappointment',
+  verifyUser,
+  appointmentHandlers.makeAppointmentHandler
+);
 server.get('/appointments/:id', loginHandler.getAppointments);
-// server.post('/appointments/add/:id', loginHandler.updateAppointments);
 
 server.use(handleError);
 
