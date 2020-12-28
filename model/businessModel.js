@@ -62,6 +62,7 @@ const createCalendarTable = (calendar, businessId) => {
 const initDays = (days, tableName) => {
   for (let i = 0; i < days.length; i++) {
     const stringifiedWorkingHours = JSON.stringify(days[i].workinghours);
+    console.log("STRINGIFIEEED: ", stringifiedWorkingHours);
     db.query(
       `INSERT INTO ${tableName} (workinghours,isworking,diff) VALUES($1,$2,$3)`,
       [stringifiedWorkingHours, days[i].isworking, days[i].diff]
@@ -69,9 +70,39 @@ const initDays = (days, tableName) => {
   }
 };
 
-/*db.query("SELECT workinghours FROM august_34 WHERE id=1").then((object) => {
+db.query("SELECT workinghours FROM august_40 WHERE id=1").then((object) => {
   console.log("OBJEEEEEEEEEEEEEEECT: ", object.rows[0]);
-});*/
+});
+
+//editBusiness
+/*const editBusiness = (businessId, businessId) => {
+  const {
+    businessname,
+    ownerid,
+    phone,
+    businessaddress,
+    geolocation,
+    calendar,
+  };
+  db.query(
+    `UPDATE business set businessname=$1,ownerid=$2,phone=$3,businessaddress=$4,geolocation=$5 WHERE id=$6 RETURNING *;`,
+    [businessname, ownerid, phone, businessaddress, geolocation, businessId]
+  )
+  .then(business=>{
+    if(calendar){
+      updateCalendarTable(calendar,businessId);
+    }
+    return business.rows[0];
+  });
+};*/
+
+const updateCalendarTable = (calendar, businessId) => {
+  const { month, days } = calendar;
+  const tableNameToUpdate = month + "_" + businessId;
+  for (let i = 0; i < days.length; i++) {
+    db.query(`INSERT INTO ${tableNameToUpdate} ()`);
+  }
+};
 
 module.exports = {
   getBusiness,
