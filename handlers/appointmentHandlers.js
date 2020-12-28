@@ -1,5 +1,5 @@
 const businessModel = require("../model/businessModel");
-const loginHandler = require("../handlers/loginHandler");
+const userHandler = require("../handlers/userHandler");
 const { json } = require("body-parser");
 
 //  we will get this  -> {day: "august/18", hour: "16:30", businessId:5}
@@ -68,7 +68,7 @@ const makeAppointmentHandler = (req, res) => {
             .insertAppointments(tableName, date, stringifiedAppointments)
             .then((day) => {
               //call hala's and salah's function, send the appointment(appointmentToInsert) as an argument
-              loginHandler.updateAppointments(
+              userHandler.updateAppointments(
                 appointmentToSend,
                 function (user) {
                   console.log(user);
