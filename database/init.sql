@@ -16,6 +16,7 @@ myFavorites TEXT
 
 
 CREATE TABLE business(
+    id SERIAL PRIMARY KEY,
     businessName VARCHAR(255) NOT NULL,
     ownerId INTEGER REFERENCES users(id),
     phone VARCHAR(255) NOT NULL,

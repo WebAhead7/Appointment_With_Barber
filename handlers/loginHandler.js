@@ -39,8 +39,8 @@ function login(req, res, next) {
       .then((dbUser) => bcrypt.compare(pass, dbUser.pass))
       .then((match) => {
         if (!match) {
-          const error = new Error('Wrong Eamil - Unathorized');
-          obj.msg = 'Wrong Eamil - Unathorized';
+          const error = new Error('Wrong Password - Unathorized');
+          obj.msg = 'Wrong Password - Unathorized';
           res.status(404).send(obj.msg);
           next(error);
         } else {

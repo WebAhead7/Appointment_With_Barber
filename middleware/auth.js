@@ -19,10 +19,13 @@ function verifyUser(req, res, next) {
       model
         .getUserByPhone(tokenData.phone)
         .then((user) => {
-          req.phone = user;
-          console.log(req.user);
-          res.cookies = user;
-          console.log(res.cookies);
+          console.log('auth USER: ', user);
+          req.userid = user.id;
+          console.log('auth userid: ', req.userid);
+          // req.phone = user;
+          // console.log(req.phone);
+          // res.cookies = user;
+          // console.log(res.cookies);
           next();
         })
         .catch((err) => {

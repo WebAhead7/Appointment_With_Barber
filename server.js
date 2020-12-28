@@ -8,8 +8,8 @@ const dotenv = require('dotenv');
 //handlers
 const signupHandler = require('./handlers/signupHandler');
 const loginHandler = require('./handlers/loginHandler');
-const getBusinessHandler = require('./handlers/getBusiness');
-const editBusinessHandler = require('./handlers/editBusiness');
+const getBusinessHandler = require('./handlers/getBusinessHandler');
+const editBusinessHandler = require('./handlers/editBusinessHandler');
 const newBusinessHandler = require('./handlers/newBusinessHandler');
 const verifyUser = require('./middleware/auth');
 
@@ -27,11 +27,13 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 
 //routes
+
 server.post('/signup', signupHandler.addUser);
 server.post('/login', loginHandler.login);
-// server.get("/business/:name", auth, getBusinessHandler);
-// server.put("/editbusinsess/:id", auth, editBusinessHandler);
-// server.post("/newbusinsess/", auth, newBusinessHandler);
+server.get('/getbusiness/:name', getBusinessHandler);
+server.get('/getbusiness', getBusinessHandler);
+server.post('/newbusiness', verifyUser, newBusinessHandler);
+//server.put("/editbusinsess/:id",verifyUser, editBusinessHandler);
 
 server.use(handleError);
 
