@@ -28,6 +28,12 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 
 //routes
+server.post("/signup", signupHandler.addUser);
+server.post("/login", loginHandler.login);
+server.get("/getbusiness/:name", getBusinessHandler);
+server.get("/getbusiness", getBusinessHandler);
+server.post("/newbusiness", verifyUser, newBusinessHandler);
+server.put("/editbusinsess/:id", verifyUser, editBusinessHandler);
 
 server.post("/signup", signupHandler.addUser);
 server.post("/login", loginHandler.login);
@@ -40,6 +46,8 @@ server.post(
   verifyUser,
   appointmentHandlers.makeAppointmentHandler
 );
+server.get("/appointments/:id", loginHandler.getAppointments);
+
 server.use(handleError);
 
 server.listen(port, () =>

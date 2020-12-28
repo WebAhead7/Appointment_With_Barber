@@ -19,4 +19,35 @@ function getUserByEmail(email) {
     return res.rows[0];
   });
 }
-module.exports = { addUser, getUserByPhone, getUserByEmail };
+
+// checking if email or phone number already exists:
+function checkValid(email, phone) {
+  return db
+    .query(`SELECT * FROM users WHERE email=$1 OR phone=$2`, [email, phone])
+    .then((res) => {
+      if (res.rows.length > 0) return false;
+      return true;
+    });
+}
+
+// adding appointments to the users' table:
+
+function getAppointments(client_id) {
+  // console.log('usermodel id: ', client_id);
+  return db
+    .query(`SELECT myAppointments FROM users WHERE id=$1`, [client_id])
+    .then((client) => {
+      if (!client.rows.length) {
+        throw new Error('User not found');
+      }
+      return client.rows[0];
+    });
+}
+
+module.exports = {
+  addUser,
+  getUserByPhone,
+  getUserByEmail,
+  checkValid,
+  getAppointments,
+};
