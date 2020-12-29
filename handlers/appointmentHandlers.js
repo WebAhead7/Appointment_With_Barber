@@ -92,7 +92,6 @@ const makeAppointmentHandler = (req, res) => {
 };
 
 //update appintment
-
 /*
 {
 	"day": "august/1",
@@ -101,8 +100,92 @@ const makeAppointmentHandler = (req, res) => {
 	"prevHour":"10:00"
 }
 */
+const updateAppointmentHandler = (req, res) => {
+  const { userid } = req;
+  const { day, hour, businessId, prevHour } = req.body;
+  const month = day.split("/")[0]; // august
+  const dayNum = day.split("/")[1]; // 1
+  const tableName = month + "_" + businessId;
+  console.log("splitteeeed daynum: ", dayNum);
+  businessModel.getCalendarTable(tableName).then((days) => {
+    const wantedDay = days.filter((day) => day.daynum == dayNum)[0];
+    console.log("WANTED DAAAAY: ", wantedDay);
+    let appointments = JSON.parse(wantedDay.appointments);
+    let insideWorkingHours = false;
+    let validHour = true;
+    let workingHoursArr = JSON.parse(wantedDay.workinghours);
+    for (let i = 0; i < workingHoursArr.length; i++) {
+      if (
+        Date.parse(`01/01/2011 ${hour}`) >=
+          Date.parse(`01/01/2011 ${workingHoursArr[i].start}`) &&
+        Date.parse(`01/01/2011 ${hour}`) <
+          Date.parse(`01/01/2011 ${workingHoursArr[i].end}`)
+      ) {
+        insideWorkingHours = true;
+      }
+    }
+    if (insideWorkingHours) {
+      console.log("INSIDEEE WORKIIING HOURS");
+      const foundPrev = appointments.filter(
+        (appointment) =>
+          Date.parse(`01/01/2011 ${appointment.hour}`) ==
+          Date.parse(`01/01/2011 ${prevHour}`)
+      );
+      console.log("found prev is :", foundPrev);
+      console.log("found prev is :", foundPrev.length);
+      if (foundPrev.length != 0) {
+        for (let i = 0; i < appointments.length; i++) {
+          if (
+            Date.parse(`01/01/2011 ${appointments[i].hour}`) ==
+            Date.parse(`01/01/2011 ${hour}`)
+          ) {
+            validHour = false;
+          }
+        }
+        if (validHour == true) {
+          let filteredArray = appointments.filter(
+            (appointment) => appointment.hour != prevHour
+          );
+          const newAppointment = {
+            hour: hour,
+            userid: userid,
+          };
+          filteredArray.push(newAppointment);
+          businessModel
+            .insertAppointments(
+              tableName,
+              dayNum,
+              JSON.stringify(filteredArray)
+            )
+            .then((day) => {
+              const appointmentToSend = {
+                hour: hour,
+                businessId: businessId,
+                userid: userid,
+                date: dayNum,
+                prevhour: prevHour,
+              };
+              userHandler.updateAppointments(
+                appointmentToSend,
+                function (user) {
+                  console.log(user);
+                  res.status(201).json(user);
+                  return;
+                }
+              );
+            });
+        } else {
+          res.status(404).json("time already booked, choose different time");
+        }
+      } else {
+        res.status(404).json("There is no prev hours");
+      }
+    } else {
+      res.status(404).json("not working in this hour");
+    }
+  });
+};
 
-const updateAppointmentHandler = (req, res) => {};
 module.exports = {
   makeAppointmentHandler,
   updateAppointmentHandler,

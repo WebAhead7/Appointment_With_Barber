@@ -6,7 +6,7 @@ function getAppointments(userid) {
     let parsed = [];
 
     if (data.myappointments !== null) {
-      console.log(data.appointments);
+      console.log(data.myappointments);
       parsed = JSON.parse(data.myappointments);
     }
 
@@ -35,11 +35,12 @@ function updateAppointments(appointment, callback) {
         arr = arr.filter((appt) => {
           appt.businessId == businessId && appt.hour != prevhour;
         });
-      } else if (prevhour == null) {
-        throw new Error("prev hour with no value! ");
       }
-
+      console.log("line 39");
+      console.log(arr);
       arr.push(appointmentToPush);
+      console.log(arr);
+
       model.updateAppointments(JSON.stringify(arr), userid).then((user) => {
         callback(user);
       });
