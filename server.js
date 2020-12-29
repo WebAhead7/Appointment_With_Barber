@@ -16,6 +16,7 @@ const appointmentHandlers = require("./handlers/appointmentHandlers");
 const { verify } = require("jsonwebtoken");
 const favoritesHandlers = require("./handlers/favoritesHandlers");
 
+const userHandler = require("./handlers/userHandler");
 dotenv.config();
 const port = 4000 || process.env.PORT;
 const server = express();
@@ -55,6 +56,7 @@ server.delete(
 server.post("/favorites/", verifyUser, favoritesHandlers.add);
 server.delete("/favorites", verifyUser, favoritesHandlers.del);
 
+server.put("/updateUser/", verifyUser, userHandler.updateUser);
 server.use(handleError);
 
 server.listen(port, () =>

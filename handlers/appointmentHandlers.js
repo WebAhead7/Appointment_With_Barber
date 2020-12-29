@@ -57,7 +57,7 @@ const makeAppointmentHandler = (req, res) => {
             hour: hour,
             businessId: businessId,
             userid: userid,
-            date: day,
+            date: date,
           };
           if (!appointments) {
             appointments = [];
