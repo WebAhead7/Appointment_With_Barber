@@ -52,6 +52,39 @@ function updateAppointments(appt, client_id) {
     )
     .then((user) => user.rows[0]);
 }
+
+// function updating user info:
+function updateUser({
+  userId,
+  email,
+  phone,
+  firstname,
+  lastname,
+  isBusinessOwner,
+  myAppointments,
+}) {
+  return db
+    .query(
+      `UPDATE users set email=$2,phone=$3,firstname=$4,lastname=$5, isBusinessOwner=$6, myAppointments=$7 WHERE id=$1 RETURNING 
+      email,
+      phone,
+      firstname,
+      lastname,
+      isBusinessOwner,
+      myAppointments;`,
+      [
+        userId,
+        email,
+        phone,
+        firstname,
+        lastname,
+        isBusinessOwner,
+        myAppointments,
+      ]
+    )
+    .then((user) => user.rows[0]);
+}
+
 module.exports = {
   addUser,
   getUserByPhone,
@@ -59,4 +92,5 @@ module.exports = {
   checkValid,
   getAppointments,
   updateAppointments,
+  updateUser,
 };

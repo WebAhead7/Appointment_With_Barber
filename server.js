@@ -13,7 +13,7 @@ const editBusinessHandler = require("./handlers/editBusinessHandler");
 const newBusinessHandler = require("./handlers/newBusinessHandler");
 const verifyUser = require("./middleware/auth");
 const appointmentHandlers = require("./handlers/appointmentHandlers");
-
+const userHandler = require("./handlers/userHandler");
 dotenv.config();
 const port = 4000 || process.env.PORT;
 const server = express();
@@ -44,7 +44,7 @@ server.put(
   verifyUser,
   appointmentHandlers.updateAppointmentHandler
 );
-
+server.put("/updateUser/", verifyUser, userHandler.updateUser);
 server.use(handleError);
 
 server.listen(port, () =>
