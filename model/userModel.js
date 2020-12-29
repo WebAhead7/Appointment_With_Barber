@@ -20,6 +20,15 @@ function getUserByEmail(email) {
   });
 }
 
+function getUserById(id) {
+  return db
+    .query(`SELECT isBusinessOwner FROM users WHERE id=$1`, [id])
+    .then((res) => {
+      if (!res.rows.length) throw new Error("No user with this id");
+      return res.rows[0];
+    });
+}
+
 // checking if email or phone number already exists:
 function checkValid(email, phone) {
   return db
@@ -59,4 +68,5 @@ module.exports = {
   checkValid,
   getAppointments,
   updateAppointments,
+  getUserById,
 };

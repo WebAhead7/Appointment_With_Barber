@@ -10,8 +10,7 @@ firstname VARCHAR(255) NOT NULL,
 lastname VARCHAR(255) NOT NULL,
 pass VARCHAR(255) NOT NULL,
 isBusinessOwner BOOLEAN NOT NULL,
--- myBusinesses TEXT,
--- myFavorites TEXT,
+myFavorites TEXT,
 myAppointments TEXT
 );
 
@@ -27,9 +26,9 @@ CREATE TABLE business(
 
 
 
-INSERT INTO users (email,phone,firstname,lastname,pass,isBusinessOwner,myAppointments)
-VALUES ('mhmd@gmail.com','5610321053','muhammad','awwad','123321',false, NULL),
-('hammode@gmail.com','123456789','hammode','awwad','65156156',true, NULL);
+INSERT INTO users (email,phone,firstname,lastname,pass,isBusinessOwner,myFavorites,myAppointments)
+VALUES ('mhmd@gmail.com','5610321053','muhammad','awwad','123321',false,NULL, NULL),
+('hammode@gmail.com','123456789','hammode','awwad','65156156',true, NULL,NULL);
 
 
 

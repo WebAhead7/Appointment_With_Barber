@@ -134,48 +134,54 @@ const updateAppointmentHandler = (req, res) => {
       console.log("found prev is :", foundPrev);
       console.log("found prev is :", foundPrev.length);
       if (foundPrev.length != 0) {
-        for (let i = 0; i < appointments.length; i++) {
-          if (
-            Date.parse(`01/01/2011 ${appointments[i].hour}`) ==
-            Date.parse(`01/01/2011 ${hour}`)
-          ) {
-            validHour = false;
+        if (foundPrev[0].userid == userid) {
+          for (let i = 0; i < appointments.length; i++) {
+            if (
+              Date.parse(`01/01/2011 ${appointments[i].hour}`) ==
+              Date.parse(`01/01/2011 ${hour}`)
+            ) {
+              validHour = false;
+            }
           }
-        }
-        if (validHour == true) {
-          let filteredArray = appointments.filter(
-            (appointment) => appointment.hour != prevHour
-          );
-          const newAppointment = {
-            hour: hour,
-            userid: userid,
-          };
-          filteredArray.push(newAppointment);
-          businessModel
-            .insertAppointments(
-              tableName,
-              dayNum,
-              JSON.stringify(filteredArray)
-            )
-            .then((day) => {
-              const appointmentToSend = {
-                hour: hour,
-                businessId: businessId,
-                userid: userid,
-                date: dayNum,
-                prevhour: prevHour,
-              };
-              userHandler.updateAppointments(
-                appointmentToSend,
-                function (user) {
-                  console.log(user);
-                  res.status(201).json(user);
-                  return;
-                }
-              );
-            });
+          if (validHour == true) {
+            let filteredArray = appointments.filter(
+              (appointment) => appointment.hour != prevHour
+            );
+            const newAppointment = {
+              hour: hour,
+              userid: userid,
+            };
+            filteredArray.push(newAppointment);
+            businessModel
+              .insertAppointments(
+                tableName,
+                dayNum,
+                JSON.stringify(filteredArray)
+              )
+              .then((day) => {
+                const appointmentToSend = {
+                  hour: hour,
+                  businessId: businessId,
+                  userid: userid,
+                  date: dayNum,
+                  prevhour: prevHour,
+                };
+                userHandler.updateAppointments(
+                  appointmentToSend,
+                  function (user) {
+                    console.log(user);
+                    res.status(201).json(user);
+                    return;
+                  }
+                );
+              });
+          } else {
+            res.status(404).json("time already booked, choose different time");
+          }
         } else {
-          res.status(404).json("time already booked, choose different time");
+          res
+            .status(401)
+            .json("you are not authorized to edit this appointment");
         }
       } else {
         res.status(404).json("There is no prev hours");
@@ -186,7 +192,72 @@ const updateAppointmentHandler = (req, res) => {
   });
 };
 
+/*
+{
+	"day": "august/1",
+	"hour": "10:00",
+ "businessId":3
+}
+*/
+//deleteAppointment
+const deleteAppointmentHandler = (req, res) => {
+  const { userid } = req;
+  const { day, hour, businessId } = req.body;
+  const month = day.split("/")[0]; // august
+  const dayNum = day.split("/")[1]; // 1
+  const tableName = month + "_" + businessId;
+  businessModel.getCalendarTable(tableName).then((days) => {
+    const wantedDay = days.filter((day) => day.daynum == dayNum)[0];
+    let appointments = JSON.parse(wantedDay.appointments);
+    let wantedAppointment = appointments.filter(
+      (appointment) =>
+        Date.parse(`01/01/2011 ${appointment.hour}`) ==
+        Date.parse(`01/01/2011 ${hour}`)
+    );
+    console.log("WANTED APPOINTMENT: ", wantedAppointment.length);
+    console.log("Wuser id: ", wantedAppointment[0].userid);
+
+    if (wantedAppointment.length != 0) {
+      if (wantedAppointment[0].userid == userid) {
+        console.log("you are authorized");
+        const filteredAppointments = appointments.filter(
+          (appointment) =>
+            Date.parse(`01/01/2011 ${appointment.hour}`) !=
+            Date.parse(`01/01/2011 ${hour}`)
+        );
+        businessModel
+          .insertAppointments(
+            tableName,
+            dayNum,
+            JSON.stringify(filteredAppointments)
+          )
+          .then((day) => {
+            const appointmentToSend = {
+              hour: hour,
+              businessId: businessId,
+              userid: userid,
+              date: dayNum,
+              isDeleted: true,
+            };
+            userHandler.updateAppointments(appointmentToSend, function (user) {
+              console.log(user);
+              res.status(201).json(user);
+              return;
+            });
+          });
+      } else {
+        res
+          .status(401)
+          .json("you are not authorized to delete this appointment");
+      }
+    } else {
+      res.status(404).json("no such appointment");
+    }
+  });
+};
+
 module.exports = {
   makeAppointmentHandler,
   updateAppointmentHandler,
+  deleteAppointmentHandler,
 };

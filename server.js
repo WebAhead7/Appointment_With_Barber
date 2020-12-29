@@ -13,6 +13,8 @@ const editBusinessHandler = require("./handlers/editBusinessHandler");
 const newBusinessHandler = require("./handlers/newBusinessHandler");
 const verifyUser = require("./middleware/auth");
 const appointmentHandlers = require("./handlers/appointmentHandlers");
+const { verify } = require("jsonwebtoken");
+const favoritesHandlers = require("./handlers/favoritesHandlers");
 
 dotenv.config();
 const port = 4000 || process.env.PORT;
@@ -35,15 +37,23 @@ server.get("/getbusiness", getBusinessHandler);
 server.post("/newbusiness", verifyUser, newBusinessHandler);
 server.put("/editbusinsess/:id", verifyUser, editBusinessHandler);
 server.post(
-  "/makeappointment",
+  "/appointment",
   verifyUser,
   appointmentHandlers.makeAppointmentHandler
 );
 server.put(
-  "/makeappointment/",
+  "/appointment/",
   verifyUser,
   appointmentHandlers.updateAppointmentHandler
 );
+server.delete(
+  "/appointment/",
+  verifyUser,
+  appointmentHandlers.deleteAppointmentHandler
+);
+
+server.post("/favorites/", verifyUser, favoritesHandlers.add);
+server.delete("/favorites", verifyUser, favoritesHandlers.del);
 
 server.use(handleError);
 
