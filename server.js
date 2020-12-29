@@ -39,6 +39,11 @@ server.post(
   verifyUser,
   appointmentHandlers.makeAppointmentHandler
 );
+server.put(
+  "/makeappointment/",
+  verifyUser,
+  appointmentHandlers.makeAppointmentHandler
+);
 
 server.use(handleError);
 

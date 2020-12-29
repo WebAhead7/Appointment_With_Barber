@@ -55,4 +55,4 @@ function login(req, res, next) {
   }
 }
 
-module.exports = { login, getAppointments, updateAppointments };
+module.exports = { login };
