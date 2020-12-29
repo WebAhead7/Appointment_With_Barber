@@ -74,22 +74,14 @@ function updateUser({
 }) {
   return db
     .query(
-      `UPDATE users set email=$2,phone=$3,firstname=$4,lastname=$5, isBusinessOwner=$6, myAppointments=$7 WHERE id=$1 RETURNING 
+      `UPDATE users set email=$2,phone=$3,firstname=$4,lastname=$5, isBusinessOwner=$6 WHERE id=$1 RETURNING 
       email,
       phone,
       firstname,
       lastname,
       isBusinessOwner,
       myAppointments;`,
-      [
-        userId,
-        email,
-        phone,
-        firstname,
-        lastname,
-        isBusinessOwner,
-        myAppointments,
-      ]
+      [userId, email, phone, firstname, lastname, isBusinessOwner]
     )
     .then((user) => user.rows[0]);
 }
