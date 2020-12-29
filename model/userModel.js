@@ -21,6 +21,13 @@ function getUserByEmail(email) {
 }
 
 function getUserById(id) {
+  return db.query(`SELECT * FROM users WHERE id=$1`, [id]).then((res) => {
+    if (!res.rows.length) throw new Error("No user with this id");
+    return res.rows[0];
+  });
+}
+
+function isBusinessOwner(id) {
   return db
     .query(`SELECT isBusinessOwner FROM users WHERE id=$1`, [id])
     .then((res) => {
@@ -62,6 +69,15 @@ function updateAppointments(appt, client_id) {
     .then((user) => user.rows[0]);
 }
 
+function updateFavorites(fav, client_id) {
+  return db
+    .query(
+      `UPDATE users SET myFavorites=$2 WHERE id=$1 RETURNING myFavorites`,
+      [client_id, fav]
+    )
+    .then((user) => user.rows[0]);
+}
+
 // function updating user info:
 function updateUser({
   userId,
@@ -95,4 +111,6 @@ module.exports = {
   updateAppointments,
   getUserById,
   updateUser,
+  isBusinessOwner,
+  updateFavorites,
 };

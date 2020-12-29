@@ -5,7 +5,7 @@ const newBusinessHandler = (req, res, next) => {
   const { ownerid } = req.body;
   console.log("owneeeeeer i : ", ownerid);
   userModel
-    .getUserById(ownerid)
+    .isBusinessOwner(ownerid)
     .then((bool) => {
       console.log("boooooool: ", bool);
       if (bool.isbusinessowner) {
