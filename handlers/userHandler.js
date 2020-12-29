@@ -15,9 +15,9 @@ function getAppointments(userid) {
 }
 
 //add  appointments:
-function updateAppointments(appointment, clabback) {
+function updateAppointments(appointment, callback) {
   console.log("IN UPDAAAAAAAAAAATE");
-  const { userid, businessId, hour, date } = appointment;
+  const { userid, businessId, hour, date, prevhour } = appointment;
   getAppointments(userid)
     .then((arr) => {
       console.log("ARRR: ", arr);
@@ -29,9 +29,19 @@ function updateAppointments(appointment, clabback) {
         date,
         hour,
       };
+      //{ userid, businessId, hour, date , prevhour}
+
+      if (prevhour) {
+        arr = arr.filter((appt) => {
+          appt.businessId == businessId && appt.hour != prevhour;
+        });
+      } else if (prevhour == null) {
+        throw new Error("prev hour with no value! ");
+      }
+
       arr.push(appointmentToPush);
       model.updateAppointments(JSON.stringify(arr), userid).then((user) => {
-        clabback(user);
+        callback(user);
       });
     });
 }
