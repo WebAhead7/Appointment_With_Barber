@@ -62,7 +62,8 @@ const makeAppointmentHandler = (req, res) => {
           if (!appointments) {
             appointments = [];
           }
-          appointments.push(appointmentToInsert);
+          //localhost:4000/editbusinsess/54
+          http: appointments.push(appointmentToInsert);
           const stringifiedAppointments = JSON.stringify(appointments);
           businessModel
             .insertAppointments(tableName, date, stringifiedAppointments)
@@ -90,6 +91,19 @@ const makeAppointmentHandler = (req, res) => {
   });
 };
 
+//update appintment
+
+/*
+{
+	"day": "august/1",
+	"hour": "10:00",
+ "businessId":3,
+	"prevHour":"10:00"
+}
+*/
+
+const updateAppointmentHandler = (req, res) => {};
 module.exports = {
   makeAppointmentHandler,
+  updateAppointmentHandler,
 };
