@@ -14,7 +14,7 @@ const add = (req, res, next) => {
     .then((user) => {
       let arr = [];
       if (user.myfavorites != null) {
-        arr = JSON.parse(data.myfavorites);
+        arr = JSON.parse(user.myfavorites);
       }
       let isAlreadyFav = false;
       arr.forEach((element) => {
@@ -46,15 +46,16 @@ const del = (req, res, next) => {
     .then((user) => {
       let arr = [];
       if (user.myfavorites != null) {
-        arr = JSON.parse(data.myfavorites);
+        arr = JSON.parse(user.myfavorites);
       }
+      console.log("USEEEER: ", user);
+      console.log("userid: ", userid);
 
       arr = arr.filter((appt) => {
-        if (appt.businessId != businessId) return true;
-
-        return false;
+        console.log(appt, businessId);
+        return appt != businessId;
       });
-
+      console.log("ARR AFTER FILTER: ", arr);
       userModel
         .updateFavorites(JSON.stringify(arr), userid)
         .then((user) => {
