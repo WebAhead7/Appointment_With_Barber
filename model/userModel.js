@@ -27,6 +27,21 @@ function getUserById(id) {
   });
 }
 
+function updateUserPassword({ userId, pass }) {
+  return db
+    .query(
+      `UPDATE users set pass=$2 WHERE id=$1 RETURNING 
+    email,
+    phone,
+    firstname,
+    lastname,
+    isBusinessOwner,
+    myAppointments;`,
+      [userId, pass]
+    )
+    .then((user) => user.rows[0]);
+}
+
 function isBusinessOwner(id) {
   return db
     .query(`SELECT isBusinessOwner FROM users WHERE id=$1`, [id])
@@ -113,4 +128,5 @@ module.exports = {
   updateUser,
   isBusinessOwner,
   updateFavorites,
+  updateUserPassword,
 };

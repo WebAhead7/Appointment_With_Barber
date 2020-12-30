@@ -1,6 +1,6 @@
 const db = require("../database/connection");
 
-//getBusiness
+//getBusiness by search
 const getBusiness = (name) => {
   return db.query("SELECT * FROM business").then((businesses) => {
     if (name) {
@@ -15,6 +15,12 @@ const getBusiness = (name) => {
       return businesses.rows;
     }
   });
+};
+
+const getBusinessByOwnerId = (ownerid) => {
+  return db
+    .query("SELECT * FROM business WHERE ownerid=$1", [ownerid])
+    .then((businesses) => businesses.rows);
 };
 
 //getBusinessById
@@ -145,4 +151,5 @@ module.exports = {
   editBusiness,
   getCalendarTable,
   insertAppointments,
+  getBusinessByOwnerId,
 };

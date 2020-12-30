@@ -33,8 +33,12 @@ server.use(bodyParser.urlencoded({ extended: true }));
 //routes
 server.post("/signup", signupHandler.addUser);
 server.post("/login", loginHandler.login);
-server.get("/getbusiness/:name", getBusinessHandler);
-server.get("/getbusiness", getBusinessHandler);
+server.get("/getbusiness/:name", getBusinessHandler.getBusinessHandler);
+server.get("/getbusiness", getBusinessHandler.getBusinessHandler);
+server.get(
+  "/getbusinessbyownerid/:ownerId",
+  getBusinessHandler.getBusinessByOwnerId
+);
 server.post("/newbusiness", verifyUser, newBusinessHandler);
 server.put("/editbusinsess/:id", verifyUser, editBusinessHandler);
 server.post(
@@ -57,6 +61,8 @@ server.post("/favorites/", verifyUser, favoritesHandlers.add);
 server.delete("/favorites", verifyUser, favoritesHandlers.del);
 
 server.put("/updateUser/", verifyUser, userHandler.updateUser);
+server.put("/updateUserPassword/", verifyUser, userHandler.updateUserPassword);
+
 server.use(handleError);
 
 server.listen(port, () =>

@@ -1,4 +1,5 @@
 const model = require("../model/userModel");
+const bcrypt = require("bcryptjs");
 //get all appointments:
 
 function getAppointments(userid) {
@@ -101,4 +102,29 @@ function updateUser(req, res, next) {
     .catch(next);
 }
 
-module.exports = { getAppointments, updateAppointments, updateUser };
+function updateUserPassword(req, res, next) {
+  let { newPassword } = req.body;
+  let userId = req.userid;
+  bcrypt
+    .genSalt(10)
+    .then((salt) => bcrypt.hash(newPassword, salt))
+    .then((hash) =>
+      model
+        .updateUserPassword({
+          userId,
+          pass: hash,
+        })
+        .then((user) => {
+          console.log("user", user);
+          res.status(200).send(user);
+        })
+        .catch(next)
+    );
+}
+
+module.exports = {
+  getAppointments,
+  updateAppointments,
+  updateUser,
+  updateUserPassword,
+};
