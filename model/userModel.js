@@ -71,7 +71,6 @@ function getAppointments(client_id) {
       if (!client.rows.length) {
         throw new Error("User not found");
       }
-      console.log("clients rooows: ", client.rows);
       return client.rows[0];
     });
 }
@@ -101,7 +100,6 @@ function updateUser({
   firstname,
   lastname,
   isBusinessOwner,
-  myAppointments,
 }) {
   return db
     .query(

@@ -90,16 +90,15 @@ const makeAppointmentHandler = (req, res) => {
 	"prevHour":"10:00"
 }
 */
+// this function just update the hour in the same day ,dosnt chek the day itself
 const updateAppointmentHandler = (req, res) => {
   const { userid } = req;
   const { day, hour, businessId, prevHour } = req.body;
   const month = day.split("/")[0]; // august
   const dayNum = day.split("/")[1]; // 1
   const tableName = month + "_" + businessId;
-  console.log("splitteeeed daynum: ", dayNum);
   businessModel.getCalendarTable(tableName).then((days) => {
     const wantedDay = days.filter((day) => day.daynum == dayNum)[0];
-    console.log("WANTED DAAAAY: ", wantedDay);
     let appointments = JSON.parse(wantedDay.appointments);
     let insideWorkingHours = false;
     let validHour = true;
@@ -115,14 +114,12 @@ const updateAppointmentHandler = (req, res) => {
       }
     }
     if (insideWorkingHours) {
-      console.log("INSIDEEE WORKIIING HOURS");
       const foundPrev = appointments.filter(
         (appointment) =>
           Date.parse(`01/01/2011 ${appointment.hour}`) ==
           Date.parse(`01/01/2011 ${prevHour}`)
       );
-      console.log("found prev is :", foundPrev);
-      console.log("found prev is :", foundPrev.length);
+
       if (foundPrev.length != 0) {
         if (foundPrev[0].userid == userid) {
           for (let i = 0; i < appointments.length; i++) {
@@ -159,7 +156,6 @@ const updateAppointmentHandler = (req, res) => {
                 userHandler.updateAppointments(
                   appointmentToSend,
                   function (user) {
-                    console.log(user);
                     res.status(201).json(user);
                     return;
                   }
@@ -204,12 +200,9 @@ const deleteAppointmentHandler = (req, res) => {
         Date.parse(`01/01/2011 ${appointment.hour}`) ==
         Date.parse(`01/01/2011 ${hour}`)
     );
-    console.log("WANTED APPOINTMENT: ", wantedAppointment.length);
-    console.log("Wuser id: ", wantedAppointment[0].userid);
 
     if (wantedAppointment.length != 0) {
       if (wantedAppointment[0].userid == userid) {
-        console.log("you are authorized");
         const filteredAppointments = appointments.filter(
           (appointment) =>
             Date.parse(`01/01/2011 ${appointment.hour}`) !=
@@ -230,7 +223,6 @@ const deleteAppointmentHandler = (req, res) => {
               isDeleted: true,
             };
             userHandler.updateAppointments(appointmentToSend, function (user) {
-              console.log(user);
               res.status(201).json(user);
               return;
             });

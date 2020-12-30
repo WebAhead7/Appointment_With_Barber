@@ -12,7 +12,6 @@ function login(req, res, next) {
   };
   if (req.body.phone) {
     const { phone, pass } = req.body;
-    console.log("HERE PHONE");
     model
       .getUserByPhone(phone)
       .then((dbUser) => bcrypt.compare(pass, dbUser.pass))
@@ -32,7 +31,6 @@ function login(req, res, next) {
       })
       .catch(next);
   } else if (req.body.email) {
-    console.log("HERE EMAIL");
     const { email, pass } = req.body;
     model
       .getUserByEmail(email)

@@ -64,10 +64,11 @@ const createCalendarTable = (calendar, businessId) => {
       `CREATE TABLE ${tableName} (id SERIAL PRIMARY KEY,workinghours TEXT, isWorking Boolean, appointments TEXT, diff INTEGER,daynum INTEGER)`
     )
       .then(() => {
-        console.log("Table Created");
         initDays(days, tableName);
       })
-      .catch((err) => console.log("Error: ", err));
+      .catch((err) => {
+        throw err;
+      });
   });
 };
 
@@ -77,21 +78,13 @@ const initDays = (days, tableName) => {
     const stringifiedWorkingHours = JSON.stringify(days[i].workinghours);
     /*var obj = JSON.parse('{"workinghours":' + days[i].workinghours + "}");
     const stringifiedWorkingHours = JSON.stringify(obj);*/
-    console.log("STRINGIFIEEED: ", stringifiedWorkingHours);
+
     db.query(
       `INSERT INTO ${tableName} (workinghours,isworking,diff,daynum) VALUES($1,$2,$3,$4)`,
       [stringifiedWorkingHours, days[i].isworking, days[i].diff, days[i].daynum]
     ).then(() => console.log("Added"));
   }
 };
-
-//parsed wokringhours array
-/*db.query("SELECT workinghours FROM august_47 WHERE id=1").then((object) => {
-  console.log(
-    "OBJEEEEEEEEEEEEEEECT: ",
-    JSON.parse(object.rows[0].workinghours)
-  );
-});*/
 
 //editBusiness
 const editBusiness = (businessId, businessObj) => {

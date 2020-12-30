@@ -30,7 +30,6 @@ const add = (req, res, next) => {
       userModel
         .updateFavorites(JSON.stringify(arr), userid)
         .then((user) => {
-          console.log("favorites after updated :", user);
           res.status(200).json(user);
         })
         .catch(next);
@@ -48,18 +47,14 @@ const del = (req, res, next) => {
       if (user.myfavorites != null) {
         arr = JSON.parse(user.myfavorites);
       }
-      console.log("USEEEER: ", user);
-      console.log("userid: ", userid);
 
       arr = arr.filter((appt) => {
-        console.log(appt, businessId);
         return appt != businessId;
       });
-      console.log("ARR AFTER FILTER: ", arr);
+
       userModel
         .updateFavorites(JSON.stringify(arr), userid)
         .then((user) => {
-          console.log("favorites after updated :", user);
           res.status(200).json(user);
         })
         .catch(next);

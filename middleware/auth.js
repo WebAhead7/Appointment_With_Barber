@@ -1,6 +1,6 @@
-const dotenv = require('dotenv');
-const jwt = require('jsonwebtoken');
-const model = require('../model/userModel');
+const dotenv = require("dotenv");
+const jwt = require("jsonwebtoken");
+const model = require("../model/userModel");
 
 dotenv.config();
 const SECRET = process.env.JWT_SECRET;
@@ -9,7 +9,7 @@ function verifyUser(req, res, next) {
   const token = req.cookies.access_token;
 
   if (!token) {
-    const error = new Error('Authorization token is required');
+    const error = new Error("Authorization token is required");
     error.status = 400;
     next(error);
   } else {
@@ -19,9 +19,7 @@ function verifyUser(req, res, next) {
       model
         .getUserByPhone(tokenData.phone)
         .then((user) => {
-          console.log('auth USER: ', user);
           req.userid = user.id;
-          console.log('auth userid: ', req.userid);
           // req.phone = user;
           // console.log(req.phone);
           // res.cookies = user;
@@ -34,7 +32,7 @@ function verifyUser(req, res, next) {
     } catch (error_we_dont_use) {
       // catch statements have to capture an error variable, even if you don't need it
       // we don't use the caught error, since we know it came from jwt.verify
-      const error = new Error('Unauthorized - No token');
+      const error = new Error("Unauthorized - No token");
       error.status = 401;
       next(error);
     }
