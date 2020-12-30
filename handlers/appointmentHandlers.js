@@ -15,27 +15,18 @@ const makeAppointmentHandler = (req, res) => {
       const workingHours = JSON.parse(dateObj.workinghours); //this is parsed array
       let insideWorkingHours = false;
       workingHours.forEach((elem) => {
-        console.log(
-          "CONFITIOOOOOOOOOON: ",
-          Date.parse(`01/01/2011 ${hour}`) >=
-            Date.parse(`01/01/2011 ${elem.start}`) &&
-            Date.parse(`01/01/2011 ${hour}`) <
-              Date.parse(`01/01/2011 ${elem.end}`)
-        );
+        //18:00   between 10:00-15:00
         if (
           Date.parse(`01/01/2011 ${hour}`) >=
             Date.parse(`01/01/2011 ${elem.start}`) &&
           Date.parse(`01/01/2011 ${hour}`) <
             Date.parse(`01/01/2011 ${elem.end}`)
         ) {
-          console.log("INSIDE IFFF");
           insideWorkingHours = true;
         }
       });
-      console.log("INSIDE WORKING HOURSSSSSSS: ", insideWorkingHours);
 
       if (insideWorkingHours) {
-        console.log("INSIDEEE WORKING HOURSSSSSSS");
         let appointments = JSON.parse(dateObj.appointments);
         let emptyHour = true;
         if (appointments) {
@@ -63,7 +54,7 @@ const makeAppointmentHandler = (req, res) => {
             appointments = [];
           }
           //localhost:4000/editbusinsess/54
-          http: appointments.push(appointmentToInsert);
+          appointments.push(appointmentToInsert);
           const stringifiedAppointments = JSON.stringify(appointments);
           businessModel
             .insertAppointments(tableName, date, stringifiedAppointments)
@@ -72,7 +63,6 @@ const makeAppointmentHandler = (req, res) => {
               userHandler.updateAppointments(
                 appointmentToSend,
                 function (user) {
-                  console.log(user);
                   res.status(201).json(user);
                   return;
                 }
