@@ -18,8 +18,8 @@ function login(req, res, next) {
       .then((match) => {
         if (!match) {
           const error = new Error("Wrong Password - Unathorized");
-          obj.msg = "Wrong Password - Unathorized";
-          res.status(404).send(obj.msg);
+          obj.msg = "Wrong Password";
+          res.status(404).json(obj.msg);
           next(error);
         } else {
           const token = jwt.sign({ phone: phone }, SECRET);
@@ -38,8 +38,8 @@ function login(req, res, next) {
       .then((match) => {
         if (!match) {
           const error = new Error("Wrong Password - Unathorized");
-          obj.msg = "Wrong Password - Unathorized";
-          res.status(404).send(obj.msg);
+          obj.msg = "Wrong Password";
+          res.status(404).json(obj.msg);
           next(error);
         } else {
           const token = jwt.sign({ email: email }, SECRET);
