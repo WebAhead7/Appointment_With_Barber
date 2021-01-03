@@ -11,7 +11,6 @@ const addUser = (req, res, next) => {
         const error = new Error("email or phone already exists");
         obj.msg = "email or phone already exists";
         res.status(404).json(obj.msg);
-        next(error);
       }
       if (checked === true) {
         bcrypt

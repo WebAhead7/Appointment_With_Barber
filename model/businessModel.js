@@ -7,8 +7,8 @@ const getBusiness = (name) => {
       const businessesArr = businesses.rows;
       const filteredArr = businessesArr.filter(
         (business) =>
-          business.businessname.includes(name) ||
-          business.businessaddress.includes(name)
+          business.businessname.toLowerCase().includes(name.toLowerCase()) ||
+          business.businessaddress.toLowerCase().includes(name.toLowerCase())
       );
       return filteredArr;
     } else {

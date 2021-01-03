@@ -34,7 +34,7 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.post("/signup", signupHandler.addUser);
 server.post("/login", loginHandler.login);
 server.get("/getbusiness/:name", getBusinessHandler.getBusinessHandler);
-server.get("/getbusiness", getBusinessHandler.getBusinessHandler);
+server.get("/getbusiness", verifyUser, getBusinessHandler.getBusinessHandler);
 server.get(
   "/getbusinessbyownerid/:ownerId",
   getBusinessHandler.getBusinessByOwnerId
