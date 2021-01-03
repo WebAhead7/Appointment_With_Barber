@@ -45,7 +45,7 @@ function login(req, res, next) {
           obj.msg = "Logged in";
           res.cookie("access_token", token);
           obj.access_token = token;
-          res.status(200).send(obj);
+          res.status(200).json(obj);
         }
       })
       .catch(next);
@@ -54,6 +54,11 @@ function login(req, res, next) {
     model
       .getUserByEmail(email)
       .then((dbUser) => {
+        console.log("DBUSEEEEEEEEEEEEEER: ", dbUser);
+
+        if (dbUser.errorMsg) {
+          return res.status(404).json(dbUser.errorMsg);
+        }
         obj.userObj = {
           firstname: dbUser.firstname,
           lastname: dbUser.lastname,

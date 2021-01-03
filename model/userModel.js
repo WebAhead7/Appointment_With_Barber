@@ -15,7 +15,7 @@ function getUserByPhone(phone) {
 }
 function getUserByEmail(email) {
   return db.query(`SELECT * FROM users WHERE email=$1`, [email]).then((res) => {
-    if (!res.rows.length) throw new Error("No user with this email");
+    if (!res.rows.length) return { errorMsg: "No user with this email" };
     return res.rows[0];
   });
 }

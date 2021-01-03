@@ -7,6 +7,7 @@ const SECRET = process.env.JWT_SECRET;
 
 function verifyUser(req, res, next) {
   const token = req.headers.token;
+
   console.log("IN AUTH");
   console.log(" TOKEN IS: ", token);
 
