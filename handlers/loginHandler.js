@@ -19,14 +19,14 @@ function login(req, res, next) {
         if (!match) {
           const error = new Error("Wrong Password - Unathorized");
           obj.msg = "Wrong Password - Unathorized";
-          res.status(404).send(obj.msg);
+          res.status(404).json(obj.msg);
           next(error);
         } else {
           const token = jwt.sign({ phone: phone }, SECRET);
           obj.msg = "Logged in";
           res.cookie("access_token", token);
           obj.access_token = token;
-          res.status(200).send(obj);
+          res.status(200).json(obj);
         }
       })
       .catch(next);

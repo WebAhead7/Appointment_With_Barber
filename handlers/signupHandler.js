@@ -10,7 +10,7 @@ const addUser = (req, res, next) => {
       if (!checked) {
         const error = new Error("email or phone already exists");
         obj.msg = "email or phone already exists";
-        res.status(404).send(obj.msg);
+        res.status(404).json(obj.msg);
         next(error);
       }
       if (checked === true) {
@@ -31,7 +31,7 @@ const addUser = (req, res, next) => {
                 const response = {
                   message: "you have successfully signed up",
                 };
-                res.status(200).send(response);
+                res.status(200).json(response);
               })
               .catch(next)
           );
