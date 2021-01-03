@@ -16,6 +16,7 @@ function login(req, res, next) {
       phone: "",
       myFavorites: "",
       myAppointments: "",
+      isBusinessOwner: "",
     },
   };
   if (req.body.phone) {
@@ -30,6 +31,7 @@ function login(req, res, next) {
           phone: dbUser.phone,
           myFavorites: dbUser.myfavorites,
           myAppointments: dbUser.myappointments,
+          isBusinessOwner: dbUser.isbusinessowner,
         };
         return bcrypt.compare(pass, dbUser.pass);
       })
@@ -66,6 +68,7 @@ function login(req, res, next) {
           phone: dbUser.phone,
           myFavorites: dbUser.myfavorites,
           myAppointments: dbUser.myappointments,
+          isBusinessOwner: dbUser.isbusinessowner,
         };
         return bcrypt.compare(pass, dbUser.pass);
       })
