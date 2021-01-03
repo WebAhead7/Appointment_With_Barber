@@ -9,12 +9,30 @@ function login(req, res, next) {
   const obj = {
     msg: "",
     access_token: "",
+    userObj: {
+      firstname: "",
+      lastname: "",
+      email: "",
+      phone: "",
+      myFavorites: "",
+      myAppointments: "",
+    },
   };
   if (req.body.phone) {
     const { phone, pass } = req.body;
     model
       .getUserByPhone(phone)
-      .then((dbUser) => bcrypt.compare(pass, dbUser.pass))
+      .then((dbUser) => {
+        obj.userObj = {
+          firstname: dbUser.firstname,
+          lastname: dbUser.lastname,
+          email: dbUser.email,
+          phone: dbUser.phone,
+          myFavorites: dbUser.myfavorites,
+          myAppointments: dbUser.myappointments,
+        };
+        return bcrypt.compare(pass, dbUser.pass);
+      })
       .then((match) => {
         if (!match) {
           const error = new Error("Wrong Password - Unathorized");
@@ -23,6 +41,7 @@ function login(req, res, next) {
           next(error);
         } else {
           const token = jwt.sign({ phone: phone }, SECRET);
+
           obj.msg = "Logged in";
           res.cookie("access_token", token);
           obj.access_token = token;
@@ -34,7 +53,17 @@ function login(req, res, next) {
     const { email, pass } = req.body;
     model
       .getUserByEmail(email)
-      .then((dbUser) => bcrypt.compare(pass, dbUser.pass))
+      .then((dbUser) => {
+        obj.userObj = {
+          firstname: dbUser.firstname,
+          lastname: dbUser.lastname,
+          email: dbUser.email,
+          phone: dbUser.phone,
+          myFavorites: dbUser.myfavorites,
+          myAppointments: dbUser.myappointments,
+        };
+        return bcrypt.compare(pass, dbUser.pass);
+      })
       .then((match) => {
         if (!match) {
           const error = new Error("Wrong Password - Unathorized");
