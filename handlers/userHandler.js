@@ -94,20 +94,57 @@ function updateUserPassword(req, res, next) {
   console.log("ana hon bal change pass");
   let { newPassword, oldPassword } = req.body;
   let userId = req.userid;
-  bcrypt
-    .genSalt(10)
-    .then((salt) => bcrypt.hash(newPassword, salt))
-    .then((hash) =>
-      model
-        .updateUserPassword({
-          userId,
-          pass: hash,
-        })
-        .then((user) => {
-          res.status(200).send(user);
-        })
-        .catch(next)
-    );
+  const obj = {
+    msg: "",
+    access_token: "",
+    userObj: {
+      firstname: "",
+      lastname: "",
+      email: "",
+      phone: "",
+      myFavorites: "",
+      myAppointments: "",
+      isBusinessOwner: "",
+    },
+  };
+  model
+    .getUserById(userId)
+    .then((dbUser) => {
+      obj.userObj = {
+        firstname: dbUser.firstname,
+        lastname: dbUser.lastname,
+        email: dbUser.email,
+        phone: dbUser.phone,
+        myFavorites: dbUser.myfavorites,
+        myAppointments: dbUser.myappointments,
+        isBusinessOwner: dbUser.isbusinessowner,
+      };
+      return bcrypt.compare(oldPassword, dbUser.pass);
+    })
+    .then((match) => {
+      if (!match) {
+        const error = new Error("Wrong Old Password ");
+        obj.msg = "Wrong Old Password";
+        res.status(404).json(obj.msg);
+        next(error);
+      } else {
+        bcrypt
+          .genSalt(10)
+          .then((salt) => bcrypt.hash(newPassword, salt))
+          .then((hash) =>
+            model
+              .updateUserPassword({
+                userId,
+                pass: hash,
+              })
+              .then((user) => {
+                res.status(200).send(user);
+              })
+              .catch(next)
+          );
+      }
+    })
+    .catch(next);
 }
 
 module.exports = {
