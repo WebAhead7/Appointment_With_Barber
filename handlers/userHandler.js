@@ -16,7 +16,15 @@ function getAppointments(userid) {
 
 //add  appointments:
 function updateAppointments(appointment, callback) {
-  const { userid, businessId, hour, date, prevhour, isDeleted } = appointment;
+  const {
+    userid,
+    businessId,
+    hour,
+    date,
+    month,
+    prevhour,
+    isDeleted,
+  } = appointment;
   getAppointments(userid)
     .then((arr) => {
       return arr;
@@ -26,12 +34,14 @@ function updateAppointments(appointment, callback) {
         businessId,
         date,
         hour,
+        month,
       };
       //{ userid, businessId, hour, date , prevhour, isDeleted}
       // we have to add & date=date
       if (prevhour) {
         arr = arr.filter((appt) => {
           if (appt.businessId != businessId) return true;
+          if (appt.month != month) return true;
           if (appt.date != date) return true;
           if (appt.hour != prevhour) return true;
           return false;

@@ -1,8 +1,12 @@
 BEGIN;
 
-DROP TABLE IF EXISTS users,business CASCADE;
+-- DROP TABLE IF EXISTS users,business CASCADE;
 
-CREATE TABLE users(
+DROP SCHEMA IF EXISTS public CASCADE;
+
+CREATE SCHEMA public;
+
+CREATE TABLE public.users(
 id SERIAL PRIMARY KEY,
 email VARCHAR(255) ,
 phone VARCHAR(255) NOT NULL,
@@ -15,7 +19,7 @@ myAppointments TEXT
 );
 
 
-CREATE TABLE business(
+CREATE TABLE public.business(
     id SERIAL PRIMARY KEY,
     businessName VARCHAR(255) NOT NULL,
     ownerId INTEGER REFERENCES users(id),
