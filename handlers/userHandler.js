@@ -1,5 +1,9 @@
 const model = require("../model/userModel");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+dotenv.config();
+const SECRET = process.env.JWT_SECRET;
 //get all appointments:
 
 function getAppointments(userid) {
@@ -70,6 +74,19 @@ function updateUser(req, res, next) {
   console.log("Im nuwrss");
   let { email, phone, firstname, lastname, isBusinessOwner } = req.body;
   let userId = req.userid;
+  const obj = {
+    msg: "",
+    access_token: "",
+    userObj: {
+      firstname: "",
+      lastname: "",
+      email: "",
+      phone: "",
+      myFavorites: "",
+      myAppointments: "",
+      isBusinessOwner: "",
+    },
+  };
   model
     .updateUser({
       userId,
@@ -84,7 +101,20 @@ function updateUser(req, res, next) {
         res.status(404).json("something went wrong!");
         // throw new Error("something went wrong!");
       } else {
-        res.status(200).json(user);
+        const token = jwt.sign({ phone: phone }, SECRET);
+        obj.userObj = {
+          firstname: user.firstname,
+          lastname: user.lastname,
+          email: user.email,
+          phone: user.phone,
+          myFavorites: user.myfavorites,
+          myAppointments: user.myappointments,
+          isBusinessOwner: user.isbusinessowner,
+        };
+        obj.msg = "Logged in";
+        res.cookie("access_token", token);
+        obj.access_token = token;
+        res.status(200).json(obj);
       }
     })
     .catch(next);
