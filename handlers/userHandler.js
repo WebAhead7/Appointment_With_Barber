@@ -57,6 +57,7 @@ function updateAppointments(appointment, callback) {
 
 // update user:
 function updateUser(req, res, next) {
+  console.log("Im nuwrss");
   let { email, phone, firstname, lastname, isBusinessOwner } = req.body;
   let userId = req.userid;
   model
@@ -70,7 +71,8 @@ function updateUser(req, res, next) {
     })
     .then((user) => {
       if (user == null) {
-        throw new Error("something went wrong!");
+        res.status(404).json("something went wrong!");
+        // throw new Error("something went wrong!");
       } else {
         res.status(200).json(user);
       }
@@ -79,7 +81,8 @@ function updateUser(req, res, next) {
 }
 
 function updateUserPassword(req, res, next) {
-  let { newPassword } = req.body;
+  console.log("ana hon bal change pass");
+  let { newPassword, oldPassword } = req.body;
   let userId = req.userid;
   bcrypt
     .genSalt(10)
