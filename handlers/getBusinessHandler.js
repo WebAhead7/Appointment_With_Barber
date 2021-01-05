@@ -1,5 +1,5 @@
 const businessModel = require("../model/businessModel");
-
+const userModel = require("../model/userModel");
 //getBusinessHandler
 const getBusinessHandler = (req, res) => {
   const { name } = req.params;
@@ -22,7 +22,36 @@ const getBusinessByOwnerId = (req, res, next) => {
     .catch((err) => res.status(500).json(err));
 };
 
+const getBusinessById = (req, res, next) => {
+  const { id } = req.params;
+  const obj = {
+    firstname: "",
+    lastname: "",
+    phone: "",
+    businessObj: {},
+  };
+  businessModel
+    .getBusinessById(id)
+    .then((business) => {
+      obj.businessObj = business;
+      console.log("OWNER IDDDD: ", business.ownerid);
+      userModel
+        .getUserById(business.ownerid)
+        .then((user) => {
+          console.log("USEEEEEER: ", user);
+          console.log("useer firstnaaaame: ", user.firstname);
+          obj.firstname = user.firstname;
+          obj.lastname = user.lastname;
+          obj.phone = user.phone;
+          return res.status(200).json(obj);
+        })
+        .catch(next);
+    })
+    .catch(next);
+};
+
 module.exports = {
   getBusinessHandler,
   getBusinessByOwnerId,
+  getBusinessById,
 };

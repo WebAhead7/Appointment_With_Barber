@@ -35,6 +35,8 @@ server.post("/signup", signupHandler.addUser);
 server.post("/login", loginHandler.login);
 server.get("/getbusiness/:name", getBusinessHandler.getBusinessHandler);
 server.get("/getbusiness", verifyUser, getBusinessHandler.getBusinessHandler);
+server.get("/business/:id", verifyUser, getBusinessHandler.getBusinessById);
+
 server.get(
   "/getbusinessbyownerid/:ownerId",
   getBusinessHandler.getBusinessByOwnerId
