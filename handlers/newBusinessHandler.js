@@ -2,13 +2,13 @@ const businessModel = require("../model/businessModel");
 const userModel = require("../model/userModel");
 
 const newBusinessHandler = (req, res, next) => {
-  const { ownerid } = req.body;
-
+  const ownerid = req.userid;
   userModel
     .isBusinessOwner(ownerid)
     .then((bool) => {
       if (bool.isbusinessowner) {
         const businessObj = req.body;
+        businessObj.ownerid = ownerid;
         businessModel
           .newBusiness(businessObj)
           .then((business) => {
