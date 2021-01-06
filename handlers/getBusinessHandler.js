@@ -13,7 +13,8 @@ const getBusinessHandler = (req, res) => {
 
 // get all the busnieses by owner id
 const getBusinessByOwnerId = (req, res, next) => {
-  const { ownerId } = req.params;
+  const ownerId = req.userid;
+  console.log("ownerr idddd", ownerId);
   businessModel
     .getBusinessByOwnerId(ownerId)
     .then((businesses) => {

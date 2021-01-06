@@ -38,7 +38,8 @@ server.get("/getbusiness", verifyUser, getBusinessHandler.getBusinessHandler);
 server.get("/business/:id", verifyUser, getBusinessHandler.getBusinessById);
 
 server.get(
-  "/getbusinessbyownerid/:ownerId",
+  "/getbusinessbyownerid/",
+  verifyUser,
   getBusinessHandler.getBusinessByOwnerId
 );
 server.post("/newbusiness", verifyUser, newBusinessHandler);
