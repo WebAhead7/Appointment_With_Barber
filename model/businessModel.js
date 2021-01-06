@@ -125,7 +125,13 @@ const updateCalendarTable = (calendar, businessId) => {
 const getCalendarTable = (tableName) => {
   return db
     .query(`SELECT * FROM ${tableName}`)
-    .then((tableData) => tableData.rows);
+    .then((tableData) => {
+      console.log("TABLE DAAAAAAAAATA: ", tableData);
+      return tableData.rows;
+    })
+    .catch((err) => {
+      return { msg: "Calendar Does Not Exist" };
+    });
 };
 
 //insertAppointment
