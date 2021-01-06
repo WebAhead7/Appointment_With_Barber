@@ -8,6 +8,7 @@ const newBusinessHandler = (req, res, next) => {
     .then((bool) => {
       if (bool.isbusinessowner) {
         const businessObj = req.body;
+        console.log("new bus :", businessObj);
         businessObj.ownerid = ownerid;
         businessModel
           .newBusiness(businessObj)
