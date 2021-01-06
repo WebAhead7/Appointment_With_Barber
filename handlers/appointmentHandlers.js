@@ -6,11 +6,16 @@ const { json } = require("body-parser");
 const makeAppointmentHandler = (req, res) => {
   const { userid } = req;
   const { day, hour, businessId } = req.body;
+  console.log("day is: ", day);
+  console.log("hour is: ", hour);
+  console.log("businessId is: ", businessId);
+
   const month = day.split("/")[0];
   const date = day.split("/")[1];
   const tableName = month + "_" + businessId;
   businessModel.getCalendarTable(tableName).then((days) => {
     const dateObj = days.filter((day) => day.daynum == date)[0];
+    console.log("dataObj is: ", dateObj);
     if (dateObj.isworking) {
       const workingHours = JSON.parse(dateObj.workinghours); //this is parsed array
       let insideWorkingHours = false;

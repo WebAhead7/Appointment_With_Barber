@@ -137,7 +137,6 @@ const getCalendarTable = (tableName) => {
   return db
     .query(`SELECT * FROM ${tableName}`)
     .then((tableData) => {
-      console.log("TABLE DAAAAAAAAATA: ", tableData);
       return tableData.rows;
     })
     .catch((err) => {
