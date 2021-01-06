@@ -114,6 +114,8 @@ const updateCalendarTable = (calendar, businessId) => {
   const tableNameToUpdate = month + "_" + businessId;
   getCalendarTable(tableNameToUpdate)
     .then((res) => {
+      console.log("117: ", res);
+      if (res.msg) throw Error(res);
       if (res.length > 0) {
         for (let i = 0; i < days.length; i++) {
           const stringifiedWorkingHours = JSON.stringify(days[i].workinghours);
@@ -125,6 +127,7 @@ const updateCalendarTable = (calendar, businessId) => {
       }
     })
     .catch((err) => {
+      console.log("line 128");
       createCalendarTable(calendar, businessId);
     });
 };
