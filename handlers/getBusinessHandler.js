@@ -50,8 +50,19 @@ const getBusinessById = (req, res, next) => {
     .catch(next);
 };
 
+const getCalendarByName = (req, res, next) => {
+  const { name } = req.params;
+  businessModel
+    .getCalendarTable(name)
+    .then((calendar) => {
+      return res.status(200).json(calendar);
+    })
+    .catch(next);
+};
+
 module.exports = {
   getBusinessHandler,
   getBusinessByOwnerId,
   getBusinessById,
+  getCalendarByName,
 };
