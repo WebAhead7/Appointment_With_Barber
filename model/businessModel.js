@@ -112,13 +112,21 @@ const editBusiness = (businessId, businessObj) => {
 const updateCalendarTable = (calendar, businessId) => {
   const { month, days } = calendar;
   const tableNameToUpdate = month + "_" + businessId;
-  for (let i = 0; i < days.length; i++) {
-    const stringifiedWorkingHours = JSON.stringify(days[i].workinghours);
-    db.query(
-      `UPDATE  ${tableNameToUpdate} SET workinghours=$1,isworking=$2,diff=$3 WHERE daynum=${days[i].daynum}`,
-      [stringifiedWorkingHours, days[i].isworking, days[i].diff]
-    ).then(() => console.log("Edited"));
-  }
+  getCalendarTable(tableNameToUpdate)
+    .then((res) => {
+      if (res.length > 0) {
+        for (let i = 0; i < days.length; i++) {
+          const stringifiedWorkingHours = JSON.stringify(days[i].workinghours);
+          db.query(
+            `UPDATE  ${tableNameToUpdate} SET workinghours=$1,isworking=$2,diff=$3 WHERE daynum=${days[i].daynum}`,
+            [stringifiedWorkingHours, days[i].isworking, days[i].diff]
+          ).then(() => console.log("Edited"));
+        }
+      }
+    })
+    .catch((err) => {
+      createCalendarTable(calendar, businessId);
+    });
 };
 
 //getCalendarTable
