@@ -67,6 +67,7 @@ server.delete("/favorites", verifyUser, favoritesHandlers.del);
 server.put("/updateUser/", verifyUser, userHandler.updateUser);
 server.put("/updateUserPassword/", verifyUser, userHandler.updateUserPassword);
 
+server.get("/user/:id", userHandler.getUserById);
 server.use(handleError);
 
 server.listen(port, () =>

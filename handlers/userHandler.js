@@ -177,9 +177,24 @@ function updateUserPassword(req, res, next) {
     .catch(next);
 }
 
+const getUserById = (req, res, next) => {
+  const { id } = req.params;
+  model
+    .getUserById(id)
+    .then((user) => {
+      const objToSend = {
+        firstname: user.firstname,
+        lastname: user.lastname,
+      };
+      return res.status(200).json(objToSend);
+    })
+    .catch(next);
+};
+
 module.exports = {
   getAppointments,
   updateAppointments,
   updateUser,
   updateUserPassword,
+  getUserById,
 };
